@@ -1,0 +1,171 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #2c2c2c;
+  --ifm-color-primary-dark: #272727;
+  --ifm-color-primary-darker: #242424;
+  --ifm-color-primary-darkest: #1e1e1e;
+  --ifm-color-primary-light: #323232;
+  --ifm-color-primary-lighter: #353535;
+  --ifm-color-primary-lightest: #434343;
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* Footer */
+  --ifm-footer-background-color: #000000;
+  --ifm-footer-color: rgba(255, 255, 255, 0.7);
+  --ifm-footer-link-color: rgba(255, 255, 255, 0.8);
+  --ifm-footer-link-hover-color: #ffffff;
+}
+
+[data-theme='dark'] {
+  --ifm-color-primary: #ebebeb;
+  --ifm-color-primary-dark: #e4e4e4;
+  --ifm-color-primary-darker: #dcdcdc;
+  --ifm-color-primary-darkest: #c9c9c9;
+  --ifm-color-primary-light: #f2f2f2;
+  --ifm-color-primary-lighter: #f5f5f5;
+  --ifm-color-primary-lightest: #fafafa;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  /* Footer */
+  --ifm-footer-background-color: #000000;
+  --ifm-footer-color: rgba(255, 255, 255, 0.7);
+  --ifm-footer-link-color: rgba(255, 255, 255, 0.8);
+  --ifm-footer-link-hover-color: #ffffff;
+}
+
+/* Footer overrides */
+.footer {
+  background-color: #000000 !important;
+}
+
+.footer__title {
+  color: #ffffff !important;
+}
+
+.footer__link-item {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.footer__link-item:hover {
+  color: #ffffff !important;
+}
+
+.footer__link.subtitle {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.footer__bottom {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.footer__copyright {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Code blocks — pure black */
+pre {
+  background-color: #000000 !important;
+}
+
+pre code {
+  background-color: transparent !important;
+}
+
+code {
+  background-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme='dark'] code {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Hero — light mode: white bg, dark mode: dark bg */
+.hero--primary {
+  background-color: #f5f5f5 !important;
+}
+
+.hero--primary .hero__title,
+.hero--primary .hero__subtitle {
+  color: #1a1a1a !important;
+}
+
+[data-theme='dark'] .hero--primary {
+  background-color: #0a0a0a !important;
+}
+
+[data-theme='dark'] .hero--primary .hero__title,
+[data-theme='dark'] .hero--primary .hero__subtitle {
+  color: #ffffff !important;
+}
+
+/* Navbar logo — force size and alignment */
+.navbar__logo {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.navbar__logo img {
+  height: 20px !important;
+  width: auto !important;
+  object-fit: contain !important;
+}
+
+/* Light mode: invert white logo to black */
+html:not([data-theme='dark']) .navbar__logo img {
+  filter: invert(1);
+}
+
+/* Hero buttons — light mode */
+.hero-button-primary {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 600 !important;
+}
+
+.hero-button-primary:hover {
+  background-color: #333333 !important;
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.hero-button-outline {
+  background-color: transparent !important;
+  color: #1a1a1a !important;
+  border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  font-weight: 600 !important;
+}
+
+.hero-button-outline:hover {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  color: #1a1a1a !important;
+  text-decoration: none !important;
+}
+
+/* Hero buttons — dark mode */
+[data-theme='dark'] .hero-button-primary {
+  background-color: #ffffff !important;
+  color: #0a0a0a !important;
+}
+
+[data-theme='dark'] .hero-button-primary:hover {
+  background-color: #e5e5e5 !important;
+  color: #0a0a0a !important;
+}
+
+[data-theme='dark'] .hero-button-outline {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+[data-theme='dark'] .hero-button-outline:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
