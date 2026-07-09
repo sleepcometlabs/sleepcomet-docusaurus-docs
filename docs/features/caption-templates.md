@@ -45,20 +45,22 @@ O gerenciador permite:
 
 ### Animação
 
-Duas famílias bem distintas — **cor** (todas as palavras do trecho aparecem juntas, só a cor
-muda) e **movimento** (o trecho inteiro entra com uma transformação, sem highlight de cor):
+Duas famílias, no padrão das plataformas de cortes virais (OpusClip/SubMagic/CapCut) —
+**por palavra** (o efeito acontece na palavra falada, cronometrado ao timestamp real do
+Whisper, um `Dialogue` ASS por palavra) e **entrada** (o trecho inteiro entra com uma
+transformação, um `Dialogue` por trecho):
 
 | Tipo | Família | Descrição real (idêntica no preview e no vídeo renderizado) |
 |---|---|---|
 | `none` | — | Estático, cor única, sem movimento |
-| `karaoke` | Cor | Destaque sequencial real, cronometrado com o timestamp de cada palavra |
-| `word` | Cor | Todas as palavras visíveis ao mesmo tempo, cor alternada par/ímpar (estático, sem reveal) |
-| `highlight` | Cor | Todas as palavras visíveis ao mesmo tempo, primeira metade na cor primária e segunda metade na cor de destaque (split estático) |
-| `fade` | Movimento | Fade in/out, 350ms |
-| `smooth` | Movimento | Fade in/out, 500ms (mesmo efeito do `fade`, só mais lento) |
-| `pop` | Movimento | Escala 0.85→1.0 em 300ms ao aparecer |
-| `scale` | Movimento | Escala 0.50→1.0 em 300ms ao aparecer (entrada maior que o `pop`) |
-| `bounce` | Movimento | Escala 0.80→1.15→1.0 em 500ms (overshoot e assentamento) |
+| `karaoke` | Por palavra | Todas as palavras visíveis; a falada troca para a cor de destaque |
+| `word` | Por palavra | Reveal cumulativo: só as palavras já faladas ficam visíveis, a frase cresce palavra a palavra |
+| `highlight` | Por palavra | Todas visíveis; a falada ganha uma caixa na cor de destaque (estilo Hormozi — `\bord` gordo com `\3c` no ASS) |
+| `pop` | Por palavra | Todas visíveis; a falada entra com scale-in rápido (0.75→1.0 em 140ms) |
+| `bounce` | Por palavra | Todas visíveis; a falada entra com overshoot elástico (0.6→1.15→1.0 em 260ms) |
+| `fade` | Entrada | Fade in/out do trecho, 350ms (`\fad(350,350)`) |
+| `smooth` | Entrada | Fade + deslize sutil de baixo para cima (`\move` de ~1.5% da altura em 300ms + `\fad(250,250)`) |
+| `scale` | Entrada | Trecho inteiro escala 0.50→1.0 em 300ms ao aparecer |
 
 ### Posicionamento
 
