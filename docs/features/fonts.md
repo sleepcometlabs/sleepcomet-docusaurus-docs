@@ -10,8 +10,13 @@ O Sleepcomet resolve fontes de forma inteligente para garantir compatibilidade.
 
 | Diretório | Descrição |
 |---|---|
-| `worker/fonts/` | Fontes do sistema (built-in) |
-| `worker/user_fonts/` | Fontes enviadas pelo usuário (Pro+) |
+| `worker/app/fonts/` | Fontes do sistema (built-in) — fonte única de verdade para o seletor de fontes do admin e do app |
+| `worker/app/user_fonts/<user_id>/` | Fontes enviadas pelo usuário (Pro+) |
+
+O `value` de cada fonte no seletor do admin/app é sempre o **stem exato do arquivo** em
+`worker/app/fonts/` (ex.: `Montserrat-Variable-wght`, não `Montserrat`) — precisa bater 1:1 com o
+nome que o worker usa para resolver `Fontname` no ASS. Um valor que não bate com nenhum arquivo
+real faz o libass cair silenciosamente num fallback feio no vídeo final.
 
 ## Resolução de Fonte
 
@@ -24,14 +29,36 @@ O worker resolve fontes nesta ordem:
 
 ## Fontes Built-in
 
-| Nome | Arquivo |
+21 fontes, todas com `@font-face` real carregada no admin e no app (self-hosted a partir dos
+mesmos arquivos do worker) para que o preview seja fiel ao vídeo renderizado:
+
+| Label | `value` (= arquivo) |
 |---|---|
-| THEBOLDFONT | `THEBOLDFONT.ttf` |
-| TikTokSans-Regular | `TikTokSans-Regular.ttf` |
-| Inter | `Inter.ttf` |
-| Sora | `Sora.ttf` |
-| DMSans | `DMSans.ttf` |
-| Bangers-Regular | `Bangers-Regular.ttf` |
+| The Bold Font | `THEBOLDFONT` |
+| TikTok Sans | `TikTokSans-Regular` |
+| Anton | `Anton-Regular` |
+| Archivo Black | `ArchivoBlack-Regular` |
+| Bangers | `Bangers-Regular` |
+| Barlow Condensed | `BarlowCondensed-Bold` |
+| Bebas Neue | `BebasNeue-Regular` |
+| DM Sans | `DMSans` |
+| Inter | `Inter` |
+| League Spartan | `LeagueSpartan` |
+| Montserrat | `Montserrat-Variable-wght` |
+| Nunito Sans | `NunitoSans` |
+| Open Sans | `OpenSans` |
+| Oswald | `Oswald-Variable-wght` |
+| Poppins | `Poppins-ExtraBold` |
+| Raleway | `Raleway-Variable-wght` |
+| Roboto | `Roboto` |
+| Rubik | `Rubik` |
+| Sora | `Sora` |
+| Urbanist | `Urbanist` |
+| Work Sans | `WorkSans` |
+
+`Outfit` e `Arial Black` apareciam antes no seletor mas nunca existiram em `worker/app/fonts/` —
+removidas (eram um fallback silencioso para uma fonte genérica tanto no preview quanto no vídeo
+final).
 
 ## Fontes Customizadas (Pro+)
 
