@@ -1,38 +1,51 @@
 ---
 title: Upload de Arquivo
+description: Envie vídeos diretamente do seu computador, com limites por plano e upload multipart para o Cloudflare R2.
 ---
 
-# Upload de Arquivo
+# Upload de arquivo
 
-Faça upload de vídeos diretamente do seu computador.
+Além de processar links, a plataforma aceita arquivos de vídeo enviados diretamente do seu computador — útil para material inédito, gravações locais e vídeos que não estão públicos em nenhuma plataforma.
 
-## Como fazer upload
+## Como enviar
 
-1. Clique no ícone de upload ao lado do campo de URL
-2. Selecione o arquivo de vídeo
-3. Configure as opções de processamento
-4. Clique em Processar
+1. Na página inicial, clique no **ícone de upload** ao lado do campo de URL;
+2. Selecione o arquivo de vídeo;
+3. Configure o processamento normalmente (intervalo, duração dos clipes, template);
+4. Clique em **Processar**.
 
-## Formatos Suportados
+## Formatos suportados
 
-- MP4 (recomendado)
-- MOV
-- AVI
-- MKV
-- WebM
+| Formato | Observação |
+|---|---|
+| **MP4** | Recomendado — melhor compatibilidade e velocidade |
+| MOV | Suportado |
+| AVI | Suportado |
+| MKV | Suportado |
+| WebM | Suportado |
 
-## Limitações
+## Limites por plano
 
-| Plano | Limite de Upload |
+| Plano | Tamanho máximo por arquivo |
 |---|---|
 | Free | 500 MB |
 | Creator | 2 GB |
 | Pro | 5 GB |
 | Enterprise | 10 GB |
 
-## Fluxo Técnico
+O arquivo enviado também conta para a cota de [armazenamento](/limits#armazenamento) do plano.
 
-1. Arquivo é enviado para Cloudflare R2 via upload multipart
-2. URL assinada é gerada para acesso temporário
-3. Job é criado com a chave do arquivo
-4. Worker baixa o arquivo do R2 e processa normalmente
+## Fluxo técnico
+
+1. O arquivo é enviado por **upload multipart** para o Cloudflare R2;
+2. A API gera uma URL assinada de acesso temporário;
+3. O job é criado com a chave do arquivo (`uploadedFileKey`);
+4. O worker baixa o arquivo do R2 e executa a [pipeline padrão](/features/pipeline) — as etapas de análise e download de URL são substituídas pela leitura direta do arquivo.
+
+:::tip Conexões instáveis
+Em redes instáveis, prefira arquivos menores ou comprima o vídeo antes do envio. Um MP4 (H.264) com bitrate moderado preserva qualidade suficiente para a clipagem.
+:::
+
+---
+
+**Próximos passos:** [Processamento por URL](/features/url-processing) · [Limites e cotas](/limits)

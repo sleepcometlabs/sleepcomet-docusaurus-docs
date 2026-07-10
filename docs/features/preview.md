@@ -1,40 +1,31 @@
 ---
 title: Prévia de Vídeo
+description: O player integrado de clipes — formato, comportamento e especificações técnicas de saída.
 ---
 
-# Prévia de Vídeo
+# Prévia de vídeo
 
-O player de prévia permite assistir aos clipes diretamente na plataforma.
+Todo clipe pode ser assistido diretamente na plataforma, sem download, pelo player integrado do card.
 
-## Funcionalidades
+## Comportamento do player
 
-- **Controles nativos**: Play, pause, volume, fullscreen
-- **Proporção**: 9:16 (vertical) para clipes mobile
-- **Preload**: Metadados apenas (economiza bandwidth)
-- **Controles restritos**: Sem download, sem remote playback
-- **Bloqueio de menu**: Botão direito desabilitado
+- **Controles nativos** — reprodução, pausa, volume e tela cheia;
+- **Proporção 9:16** — a prévia reflete o formato vertical de saída;
+- **Carregamento sob demanda** — apenas os metadados são pré-carregados, economizando banda;
+- **Volume persistente** — o volume escolhido é salvo localmente no navegador e restaurado nos próximos clipes;
+- **Proteções** — download pelo player, reprodução remota e menu de contexto desabilitados.
 
-## Persistência de Volume
+## Especificações de saída
 
-O volume é salvo automaticamente em `localStorage`:
+| Parâmetro | Valor |
+|---|---|
+| Resolução | 1080×1920 (vertical) ou 1280×720 (horizontal) |
+| Codec | H.264 (libx264) |
+| CRF | 20 (qualidade padrão) |
+| Preset de encoding | fast |
 
-```typescript
-const VOLUME_KEY = "sc_video_volume"
+A qualidade máxima de renderização varia por plano — 720p no Free, 1080p no Creator e 2K/4K no Pro e Enterprise. Consulte [Limites e cotas](/limits#clipes).
 
-// Salva quando o volume muda
-onVolumeChange={(e) => {
-  localStorage.setItem(VOLUME_KEY, String(e.currentTarget.volume))
-}}
+---
 
-// Restaura ao carregar
-useEffect(() => {
-  videoRef.current.volume = getStoredVolume()
-}, [clip.url])
-```
-
-## Formato
-
-- **Resolução**: 1080×1920 (vertical) ou 1280×720 (horizontal)
-- **Codec**: H.264 (libx264)
-- **CRF**: 20 (qualidade padrão)
-- **Preset**: fast
+**Próximos passos:** [Clipes](/features/clips) · [Pipeline de processamento](/features/pipeline)

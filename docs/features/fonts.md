@@ -1,38 +1,15 @@
 ---
 title: Fontes
+description: As 21 fontes integradas, o upload de fontes customizadas (Pro+) e como o worker resolve fontes na renderização.
 ---
 
-# Sistema de Fontes
+# Sistema de fontes
 
-O Sleepcomet resolve fontes de forma inteligente para garantir compatibilidade.
+A tipografia é o elemento mais visível de uma legenda. O SleepComet inclui **21 fontes integradas**, todas carregadas com `@font-face` real no editor — a prévia usa exatamente o mesmo arquivo de fonte que o renderizador.
 
-## Diretórios de Fontes
+## Fontes integradas
 
-| Diretório | Descrição |
-|---|---|
-| `worker/app/fonts/` | Fontes do sistema (built-in) — fonte única de verdade para o seletor de fontes do admin e do app |
-| `worker/app/user_fonts/<user_id>/` | Fontes enviadas pelo usuário (Pro+) |
-
-O `value` de cada fonte no seletor do admin/app é sempre o **stem exato do arquivo** em
-`worker/app/fonts/` (ex.: `Montserrat-Variable-wght`, não `Montserrat`) — precisa bater 1:1 com o
-nome que o worker usa para resolver `Fontname` no ASS. Um valor que não bate com nenhum arquivo
-real faz o libass cair silenciosamente num fallback feio no vídeo final.
-
-## Resolução de Fonte
-
-O worker resolve fontes nesta ordem:
-
-1. **Busca exata**: `{fonte}.{ext}` no diretório do usuário
-2. **Busca exata**: `{fonte}.{ext}` no diretório do sistema
-3. **Normalização**: Nome normalizado (remove espaços, símbolos)
-4. **Glob**: Busca ampla no diretório do usuário
-
-## Fontes Built-in
-
-21 fontes, todas com `@font-face` real carregada no admin e no app (self-hosted a partir dos
-mesmos arquivos do worker) para que o preview seja fiel ao vídeo renderizado:
-
-| Label | `value` (= arquivo) |
+| Nome | Identificador interno |
 |---|---|
 | The Bold Font | `THEBOLDFONT` |
 | TikTok Sans | `TikTokSans-Regular` |
@@ -56,28 +33,35 @@ mesmos arquivos do worker) para que o preview seja fiel ao vídeo renderizado:
 | Urbanist | `Urbanist` |
 | Work Sans | `WorkSans` |
 
-`Outfit` e `Arial Black` apareciam antes no seletor mas nunca existiram em `worker/app/fonts/` —
-removidas (eram um fallback silencioso para uma fonte genérica tanto no preview quanto no vídeo
-final).
+:::note Seleção pelo seletor
+Sempre escolha a fonte pelo seletor do editor. O identificador precisa corresponder exatamente a um arquivo de fonte real do renderizador — um nome digitado manualmente que não exista resulta em fallback silencioso para uma fonte genérica no vídeo final.
+:::
 
-## Fontes Customizadas (Pro+)
+## Fontes customizadas (Pro e Enterprise)
 
-Usuários dos planos Pro e Enterprise podem fazer upload de fontes `.ttf` e `.otf`.
+Usuários dos planos Pro e Enterprise podem enviar as próprias fontes nos formatos `.ttf` e `.otf`:
 
-### Limites
-
-| Plano | Limite de Fontes |
+| Plano | Limite |
 |---|---|
-| Free/Creator | 0 (apenas built-in) |
+| Free / Creator | — (apenas as integradas) |
 | Pro | 10 fontes |
-| Enterprise | Ilimitado |
+| Enterprise | Ilimitadas |
 
-## Conversão para ASS
+## Como o worker resolve fontes
 
-O worker extrai o nome da família do arquivo TTF/OTF e usa no campo `Fontname` do ASS:
+Na renderização, a fonte é localizada nesta ordem:
+
+1. **Busca exata** no diretório de fontes do usuário (`user_fonts/<user_id>/`);
+2. **Busca exata** no diretório de fontes do sistema;
+3. **Busca normalizada** — nome sem espaços e símbolos;
+4. **Busca ampla (glob)** no diretório do usuário.
+
+Para fontes customizadas, o worker extrai o nome da família diretamente do arquivo TTF/OTF e o utiliza no campo `Fontname` do ASS. Se nenhuma fonte for encontrada, o fallback é `Arial`.
 
 ```python
 font_name = get_font_family_name(font_path) or font_path.stem
 ```
 
-Se a fonte não for encontrada, usa `"Arial"` como fallback.
+---
+
+**Próximos passos:** [Templates de legendas](/features/caption-templates) · [Solução de problemas — fontes](/troubleshooting#a-legenda-aparece-com-uma-fonte-diferente-da-escolhida)

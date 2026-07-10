@@ -1,16 +1,19 @@
 ---
 title: Integrações
+description: Endpoints de integrações com redes sociais — listagem, remoção e o fluxo de conexão OAuth.
 ---
 
-# API de Integrações
+# API de integrações
 
-## Listar Integrações
+Gerencia as contas de redes sociais conectadas via OAuth. O guia de uso está em [Integrações](/features/integrations).
+
+## Listar integrações
 
 ```
 GET /integrations
 ```
 
-**Response:**
+**Resposta:**
 
 ```json
 [
@@ -18,27 +21,39 @@ GET /integrations
     "id": "uuid",
     "provider": "tiktok",
     "accountName": "@usuario",
-    "createdAt": "2025-01-15T10:00:00Z"
+    "createdAt": "2026-07-09T10:00:00Z"
   }
 ]
 ```
 
-:::note
-`accessToken` e `refreshToken` não são retornados por segurança.
+:::note Tokens nunca são expostos
+`accessToken` e `refreshToken` são armazenados apenas no servidor e nunca retornados pela API. Detalhes em [Segurança](/security#tokens-de-redes-sociais).
 :::
 
-## Remover Integração
+## Remover integração
 
 ```
 DELETE /integrations/:id
 ```
 
-**Response:** `{ "status": "ok" }`
+**Resposta:** `{ "status": "ok" }`
 
-## Fluxo de Conexão
+Após a remoção, publicações agendadas para essa conta passam a falhar — reagende-as após reconectar.
 
-1. Frontend redireciona para OAuth da plataforma
-2. Usuário autoriza o acesso
-3. Callback retorna tokens
-4. API salva a integração no banco
-5. Integração fica disponível para publicação
+## Fluxo de conexão
+
+A conexão de uma nova conta é iniciada pela interface (não por endpoint REST direto):
+
+1. O frontend redireciona para a tela OAuth do provedor;
+2. O usuário autoriza os escopos de publicação;
+3. O callback retorna os tokens à API;
+4. A API grava a integração em `social_accounts`;
+5. A conta fica disponível para publicação e agendamento.
+
+## Limites
+
+O número de contas conectadas varia por plano — 1 (Free), 3 (Creator/Pro), personalizado (Enterprise). Ver [Limites e cotas](/limits#integrações).
+
+---
+
+**Próximos passos:** [Agendamento](/api/scheduling) · [Integrações (guia)](/features/integrations)

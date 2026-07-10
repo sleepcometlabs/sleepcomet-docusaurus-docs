@@ -1,14 +1,19 @@
 ---
 title: Sistema de Legendas
+description: Documentação interna da geração de legendas ASS — estrutura, conversões, animações, burn-in e marca d'água.
 ---
 
-# Sistema de Legendas do Worker
+# Sistema de legendas do worker
+
+:::note Documentação interna
+Esta página descreve como o worker gera e queima as legendas nos vídeos. Para configurar o estilo das legendas, use [Templates de legendas](/features/caption-templates).
+:::
 
 ## Formato ASS
 
-O Sleepcomet gera legendas no formato ASS (Advanced SubStation Alpha).
+As legendas são geradas em **ASS (Advanced SubStation Alpha)** — o formato que suporta estilos, posicionamento absoluto e as transformações usadas pelas animações.
 
-### Estrutura do Arquivo
+### Estrutura do arquivo
 
 ```ass
 [Script Info]
@@ -31,9 +36,11 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 0,0:00:01.00,0:00:03.00,Default,,0,0,0,,{\pos(540,1440)}Texto da legenda
 ```
 
-### Conversão de Cores
+## Conversões
 
-CSS hex → ASS `&HAABBGGRR`:
+### Cores
+
+CSS hexadecimal → formato ASS `&HAABBGGRR` (ordem de canais invertida):
 
 ```python
 def hex_to_ass_color(hex_color: str, default: str = "#FFFFFF") -> str:
@@ -42,54 +49,74 @@ def hex_to_ass_color(hex_color: str, default: str = "#FFFFFF") -> str:
     return f"&H00{b:02X}{g:02X}{r:02X}"
 ```
 
-### Cálculo de Posição
+### Posição vertical
+
+O `positionY` do template (percentual) é convertido para pixels com margem de segurança:
 
 ```python
 def get_safe_vertical_position(pos_y: float, video_height: int) -> int:
-    # pos_y é decimal (0.0-1.0)
-    # Converte para pixels com margem de segurança
+    # pos_y é decimal (0.0–1.0)
     y = int(pos_y * video_height)
     return max(60, min(video_height - 60, y))
 ```
 
-### Escala de Fonte
+### Escala de fonte
+
+O tamanho da fonte é proporcional à largura do vídeo — a mesma escala reproduzida na prévia do editor:
 
 ```python
 def get_scaled_font_size(base_size: int, video_width: int) -> int:
-    # Escala proporcional à largura do vídeo
     return int(base_size * 0.52 / 310 * video_width)
 ```
 
-## Animações
+## Pipeline de geração
 
-Cada tipo de animação gera overrides ASS específicos:
+O arquivo ASS é construído em `ass_builder.py`:
+
+1. Resolve a fonte via `font_registry.py` ([sistema de fontes](/features/fonts));
+2. Calcula o tamanho proporcional à resolução de saída;
+3. Converte as cores hexadecimais para o formato ASS;
+4. Gera os eventos `Dialogue` — um por palavra (animações por palavra) ou um por trecho (animações de entrada);
+5. Aplica os overrides de animação (`\fad`, `\fscx`, `\t`, `\move`);
+6. Posiciona com `\pos(x,y)` a partir do `positionY` do template.
+
+## Animações
 
 | Animação | Override ASS |
 |---|---|
-| `fade` | `{\fad(150,150)}` |
-| `smooth` | `{\fad(250,250)}` |
-| `pop` | `{\fscx92\fscy92\t(0,140,\fscx108\fscy108)\t(140,260,\fscx100\fscy100)}` |
-| `bounce` | `{\fscx80\fscy80\t(0,180,\fscx115\fscy115)\t(180,300,\fscx100\fscy100)}` |
-| `scale` | `{\fscx50\fscy50\t(0,250,\fscx100\fscy100)}` |
-| `karaoke` | Destaque por palavra com `\c` override |
+| `fade` | `{\fad(350,350)}` |
+| `smooth` | `\move` (~1,5% da altura em 300 ms) + `{\fad(250,250)}` |
+| `pop` | `{\fscx75\fscy75\t(0,140,\fscx100\fscy100)}` na palavra falada |
+| `bounce` | `{\fscx60\fscy60\t(0,120,\fscx115\fscy115)\t(120,260,\fscx100\fscy100)}` |
+| `scale` | `{\fscx50\fscy50\t(0,300,\fscx100\fscy100)}` |
+| `karaoke` | Troca de cor da palavra falada via override `\c` |
+| `highlight` | Caixa na cor de destaque via `\bord` espesso + `\3c` |
 
-## Queima de Legendas (Burn-in)
+A referência completa do comportamento de cada animação está em [Animações](/features/animations).
 
-As legendas ASS são queimadas no vídeo via FFmpeg:
+## Burn-in
+
+As legendas são queimadas no vídeo pelo FFmpeg, com o diretório de fontes resolvido:
 
 ```bash
 ffmpeg -i clip.mp4 -vf "ass=clip.ass:fontsdir=fonts/" -c:v libx264 -crf 20 output.mp4
 ```
 
-## Marca d'Água
+## Marca d'água
 
-Após a queima de legendas, uma marca d'água é sobreposta:
+Após o burn-in, a marca d'água é sobreposta conforme o template (posição, opacidade e tamanho) e as regras do plano:
 
 ```python
 overlay_watermark(
     input_path, output_path, watermark_path,
-    opacity=0.05,           # 5% opacidade
-    position="bottom-center",
-    crf=20, preset="fast"
+    opacity=0.5,             # watermarkOpacity / 100
+    position="bottom-right",
+    crf=20, preset="fast",
 )
 ```
+
+No plano Free, `watermarkEnabled` é reimposto como `true` pela API antes de o job chegar ao worker — ver [Segurança](/security#regras-de-plano-aplicadas-no-servidor).
+
+---
+
+**Próximos passos:** [Pipeline do worker](/api/worker-pipeline) · [Templates de legendas](/features/caption-templates)

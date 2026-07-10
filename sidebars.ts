@@ -2,19 +2,39 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
 const sidebars: SidebarsConfig = {
   guideSidebar: [
-    'intro',
-    'quickstart',
-    'architecture',
     {
       type: 'category',
-      label: 'Conta e Planos',
-      items: ['account/auth', 'account/settings', 'account/pricing'],
+      label: 'Primeiros Passos',
+      collapsed: false,
+      items: ['intro', 'quickstart', 'best-practices'],
+    },
+    {
+      type: 'category',
+      label: 'Plataforma',
+      collapsed: false,
+      items: ['architecture', 'security'],
+    },
+    {
+      type: 'category',
+      label: 'Conta e Assinatura',
+      items: [
+        'account/auth',
+        'account/settings',
+        'account/credits',
+        'account/pricing',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Central de Ajuda',
+      items: ['faq', 'troubleshooting', 'limits', 'glossary'],
     },
   ],
   featuresSidebar: [
     {
       type: 'category',
       label: 'Processamento',
+      collapsed: false,
       items: [
         'features/url-processing',
         'features/file-upload',
@@ -33,11 +53,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Clipes',
-      items: [
-        'features/clips',
-        'features/scoring',
-        'features/preview',
-      ],
+      items: ['features/clips', 'features/scoring', 'features/preview'],
     },
     {
       type: 'category',
@@ -53,31 +69,34 @@ const sidebars: SidebarsConfig = {
     'api/index',
     {
       type: 'category',
+      label: 'Fundamentos',
+      collapsed: false,
+      items: ['api/auth', 'api/errors'],
+    },
+    {
+      type: 'category',
       label: 'Endpoints',
+      collapsed: false,
       items: [
+        'api/videos',
         'api/projects',
         'api/clips',
         'api/caption-templates',
-        'api/integrations',
         'api/scheduling',
+        'api/integrations',
         'api/credits',
-        'api/auth',
+        'api/notifications',
       ],
     },
     {
       type: 'category',
-      label: 'Webhooks e Events',
-      items: [
-        'api/sse-status',
-      ],
+      label: 'Tempo Real',
+      items: ['api/sse-status'],
     },
     {
       type: 'category',
-      label: 'Worker Internals',
-      items: [
-        'api/worker-pipeline',
-        'api/worker-subtitles',
-      ],
+      label: 'Interno — Worker',
+      items: ['api/worker-pipeline', 'api/worker-subtitles'],
     },
   ],
 };

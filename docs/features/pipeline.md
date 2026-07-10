@@ -1,62 +1,70 @@
 ---
 title: Pipeline de Processamento
+description: As oito etapas que transformam um vídeo longo em clipes renderizados, e como acompanhar cada uma em tempo real.
 ---
 
-# Pipeline de Processamento
+# Pipeline de processamento
 
-A pipeline do Sleepcomet processa vídeos em 8 etapas sequenciais.
+Todo projeto percorre uma pipeline de **oito etapas sequenciais**, executadas pelo worker de processamento. O progresso de cada etapa é transmitido em tempo real para a página do projeto.
 
 ## Etapas
 
-### 1. Analisar URL
-- Busca metadados via yt-dlp
-- Extrai título, duração, thumbnail
-- Detecta idioma do áudio
+### 1. Análise da URL
 
-### 2. Baixar Vídeo
-- Download na melhor qualidade disponível
-- Suporta múltiplas resoluções
-- Armazenamento temporário no worker
+- Busca de metadados via yt-dlp: título, duração, thumbnail;
+- Detecção do idioma do áudio.
 
-### 3. Cortar Intervalo
-- Aplica trim inicial e final conforme configurado
-- Remove silêncios excessivos
-- Preserva qualidade do áudio
+### 2. Download do vídeo
 
-### 4. Extrair Áudio
-- Conversão para WAV 16kHz mono
-- Otimizado para transcrição Whisper
-- Separação de vocais (Demucs, opcional)
+- Download na melhor qualidade disponível;
+- Armazenamento temporário no worker durante o processamento.
 
-### 5. Transcrição Rápida
-- Whisper com modelo leve (small)
-- Geração de segmentos com timestamps
-- Palavras individuais com timing
+### 3. Corte do intervalo
 
-### 6. Gerar Cortes Inteligentes
-- IA analisa os melhores momentos
-- Seleciona trechos com alto potencial viral
-- Calcula score de viralidade (0-100)
+- Aplicação do trim inicial e final configurado no projeto;
+- Preservação integral da qualidade do áudio.
 
-### 7. Transcrever e Legendar
-- Geração de legendas ASS para cada clipe
-- Aplicação de estilos (fonte, cor, animação)
-- Overlay de marca d'água
+### 4. Extração de áudio
 
-### 8. Finalizar
-- Renderização com FFmpeg
-- Upload para Cloudflare R2
-- Notificação de conclusão via SSE
+- Conversão para WAV 16 kHz mono, o formato ideal para o Whisper;
+- Separação de vocais com Demucs, quando habilitada — melhora a transcrição em áudios com música de fundo.
 
-## Monitoramento
+### 5. Transcrição rápida
 
-Acompanhe o progresso em tempo real na página do projeto:
+- Transcrição com Whisper;
+- Segmentos com timestamps e **timing individual por palavra** — a base da sincronização das animações de legenda.
 
-- Barra de progresso por etapa
-- Logs ao vivo do processamento
-- Tempo estimado restante
-- Estatísticas (modelo Whisper, device, compute)
+### 6. Geração de cortes inteligentes
+
+- A IA analisa a transcrição e identifica os trechos com maior potencial;
+- Cada corte recebe um [score de viralidade](/features/scoring) de 0 a 100;
+- A duração respeita o preset escolhido (automático, 15–30s, 30–60s, 60–90s).
+
+### 7. Legendas e enriquecimento
+
+- Geração do arquivo de legenda ASS para cada clipe, com o [template](/features/caption-templates) aplicado;
+- Sobreposição da marca d'água conforme as regras do plano.
+
+### 8. Renderização final
+
+- Burn-in das legendas e renderização com FFmpeg (H.264);
+- Upload dos clipes para o Cloudflare R2;
+- Notificação de conclusão via [SSE](/api/sse-status).
+
+## Acompanhamento em tempo real
+
+Na página do projeto, você acompanha:
+
+- **Barra de progresso por etapa**, com a etapa ativa destacada;
+- **Mensagens ao vivo** do processamento (ex.: "Gerando legendas para o clipe 3/8...");
+- **Estatísticas técnicas** — modelo Whisper, dispositivo e modo de computação.
+
+Você pode fechar a página a qualquer momento: o processamento continua no servidor.
 
 ## Cancelamento
 
-Você pode cancelar o processamento a qualquer momento. O projeto será removido e os créditos não serão cobrados.
+O processamento pode ser cancelado a qualquer momento pela página do projeto. O projeto é removido e **nenhum crédito é cobrado**.
+
+---
+
+**Próximos passos:** [Sistema de scoring](/features/scoring) · [Pipeline do worker (interno)](/api/worker-pipeline)

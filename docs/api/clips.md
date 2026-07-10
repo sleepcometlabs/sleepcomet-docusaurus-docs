@@ -1,10 +1,13 @@
 ---
 title: Clipes
+description: Endpoints de agendamento de clipes — individual, em lote e listagem de publicações programadas.
 ---
 
-# API de Clipes
+# API de clipes
 
-## Agendar Clipe
+Os clipes são criados pelo processamento e lidos pelo [detalhe do projeto](/api/projects#detalhe-do-projeto). Os endpoints abaixo cobrem a publicação: agendamento individual, em lote e a listagem de agendamentos.
+
+## Agendar clipe
 
 ```
 POST /clips/:clipId/schedule
@@ -16,11 +19,17 @@ POST /clips/:clipId/schedule
 {
   "provider": "tiktok",
   "title": "Título do post",
-  "scheduledAt": "2025-01-20T14:00:00Z"
+  "scheduledAt": "2026-07-20T14:00:00Z"
 }
 ```
 
-**Response:**
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `provider` | string | `tiktok`, `instagram` ou `youtube` — requer [integração](/api/integrations) ativa |
+| `title` | string | Título/legenda da publicação |
+| `scheduledAt` | string | Data e hora em ISO 8601 (UTC) |
+
+**Resposta:** `201 Created`
 
 ```json
 {
@@ -30,26 +39,21 @@ POST /clips/:clipId/schedule
   "projectId": "uuid",
   "provider": "tiktok",
   "title": "Título do post",
-  "scheduledAt": "2025-01-20T14:00:00Z",
+  "scheduledAt": "2026-07-20T14:00:00Z",
   "status": "pending",
-  "createdAt": "2025-01-15T10:00:00Z"
+  "createdAt": "2026-07-09T10:00:00Z"
 }
 ```
 
-## Listar Agendamentos
+## Listar agendamentos
 
 ```
 GET /clips/scheduled
 ```
 
-**Query Parameters:**
+Aceita [paginação](/api/errors#paginação) (`page`, `limit`).
 
-| Param | Tipo | Descrição |
-|---|---|---|
-| `page` | number | Página (default: 1) |
-| `limit` | number | Itens por página (default: 20) |
-
-**Response:**
+**Resposta:**
 
 ```json
 {
@@ -60,24 +64,33 @@ GET /clips/scheduled
 }
 ```
 
-## Agendar em Lote
+## Agendar em lote
 
 ```
 POST /projects/:id/bulk-schedule
 ```
 
+Agenda vários clipes de um projeto com intervalo fixo entre publicações.
+
 **Body:**
 
 ```json
 {
-  "scheduledAt": "2025-01-20T14:00:00Z",
+  "scheduledAt": "2026-07-20T14:00:00Z",
   "intervalHours": 2,
   "providers": ["tiktok", "instagram"],
   "caption": "Legenda personalizada (opcional)"
 }
 ```
 
-**Response:**
+| Campo | Tipo | Descrição |
+|---|---|---|
+| `scheduledAt` | string | Data/hora da primeira publicação (ISO 8601, UTC) |
+| `intervalHours` | number | Intervalo entre publicações consecutivas |
+| `providers` | string[] | Redes de destino |
+| `caption` | string | Legenda de publicação opcional, aplicada a todos os clipes |
+
+**Resposta:**
 
 ```json
 {
@@ -85,3 +98,11 @@ POST /projects/:id/bulk-schedule
   "count": 8
 }
 ```
+
+## Ciclo de status
+
+Os agendamentos transitam por `pending → publishing → published` (ou `failed`) — a referência completa está em [API de agendamento](/api/scheduling#status-dos-agendamentos).
+
+---
+
+**Próximos passos:** [Agendamento](/api/scheduling) · [Integrações](/api/integrations)

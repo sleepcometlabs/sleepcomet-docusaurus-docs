@@ -1,171 +1,446 @@
 /**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
+ * SleepComet Docs — design system global.
+ *
+ * Base: Infima (Docusaurus) + Tailwind v4 (somente theme/utilities, sem
+ * preflight para não conflitar com o Infima) + tokens do Coss UI.
+ * Direção: noturno, monocromático, um único acento "cometa" (azul-gelo).
+ * Sem gradientes.
  */
 
-/* You can override the default Infima variables here. */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+@source "../components";
+@source "../pages";
+@source "../theme";
+
+@custom-variant dark (&:is([data-theme="dark"] *));
+
+/* ---------------------------------------------------------------------------
+ * Tokens Coss UI (consumidos pelos componentes em src/components/cui)
+ * ------------------------------------------------------------------------- */
+
+@theme inline {
+  --font-sans: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --font-heading: "Space Grotesk", var(--font-sans);
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-comet: var(--comet);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+}
+
+/* ---------------------------------------------------------------------------
+ * Paleta — modo claro
+ * ------------------------------------------------------------------------- */
+
 :root {
-  --ifm-color-primary: #2c2c2c;
-  --ifm-color-primary-dark: #272727;
-  --ifm-color-primary-darker: #242424;
-  --ifm-color-primary-darkest: #1e1e1e;
-  --ifm-color-primary-light: #323232;
-  --ifm-color-primary-lighter: #353535;
-  --ifm-color-primary-lightest: #434343;
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --background: oklch(0.99 0.002 260);
+  --foreground: oklch(0.17 0.012 260);
+  --card: oklch(0.975 0.003 260);
+  --card-foreground: oklch(0.17 0.012 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.17 0.012 260);
+  --primary: oklch(0.21 0.014 260);
+  --primary-foreground: oklch(0.985 0.002 260);
+  --secondary: oklch(0.955 0.004 260);
+  --secondary-foreground: oklch(0.21 0.014 260);
+  --muted: oklch(0.955 0.004 260);
+  --muted-foreground: oklch(0.51 0.014 260);
+  --accent: oklch(0.945 0.005 260);
+  --accent-foreground: oklch(0.21 0.014 260);
+  --destructive: oklch(0.577 0.245 27.3);
+  --destructive-foreground: oklch(0.577 0.245 27.3);
+  --border: oklch(0.915 0.006 260);
+  --input: oklch(0.915 0.006 260);
+  --ring: oklch(0.70 0.01 260);
+  --comet: oklch(0.52 0.145 252);
+  --radius: 0.625rem;
 
-  /* Footer */
-  --ifm-footer-background-color: #000000;
-  --ifm-footer-color: rgba(255, 255, 255, 0.7);
-  --ifm-footer-link-color: rgba(255, 255, 255, 0.8);
-  --ifm-footer-link-hover-color: #ffffff;
+  /* Infima */
+  --ifm-font-family-base: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --ifm-font-family-monospace: "JetBrains Mono", ui-monospace, monospace;
+  --ifm-heading-font-family: "Space Grotesk", var(--ifm-font-family-base);
+  --ifm-heading-font-weight: 600;
+  --ifm-background-color: oklch(0.99 0.002 260);
+  --ifm-color-content: oklch(0.24 0.012 260);
+  --ifm-color-content-secondary: oklch(0.51 0.014 260);
+
+  --ifm-color-primary: oklch(0.50 0.145 252);
+  --ifm-color-primary-dark: oklch(0.46 0.145 252);
+  --ifm-color-primary-darker: oklch(0.43 0.14 252);
+  --ifm-color-primary-darkest: oklch(0.38 0.13 252);
+  --ifm-color-primary-light: oklch(0.55 0.145 252);
+  --ifm-color-primary-lighter: oklch(0.58 0.14 252);
+  --ifm-color-primary-lightest: oklch(0.64 0.13 252);
+
+  --ifm-code-font-size: 87.5%;
+  --ifm-code-border-radius: 6px;
+  --ifm-global-radius: 10px;
+  --docusaurus-highlighted-code-line-bg: oklch(0.9 0.01 252 / 40%);
+
+  --ifm-navbar-background-color: oklch(0.99 0.002 260 / 82%);
+  --ifm-navbar-shadow: none;
+  --ifm-toc-border-color: var(--border);
+  --ifm-table-border-color: var(--border);
+  --ifm-hr-background-color: var(--border);
+
+  --ifm-footer-background-color: oklch(0.975 0.003 260);
+  --ifm-footer-color: oklch(0.45 0.012 260);
+  --ifm-footer-link-color: oklch(0.35 0.012 260);
+  --ifm-footer-link-hover-color: oklch(0.17 0.012 260);
+  --ifm-footer-title-color: oklch(0.17 0.012 260);
+
+  --ifm-menu-color: oklch(0.38 0.012 260);
+  --ifm-menu-color-background-active: oklch(0.945 0.005 260);
+  --ifm-menu-color-background-hover: oklch(0.955 0.004 260);
+  --ifm-breadcrumb-item-background-active: oklch(0.945 0.005 260);
 }
 
-[data-theme='dark'] {
-  --ifm-color-primary: #ebebeb;
-  --ifm-color-primary-dark: #e4e4e4;
-  --ifm-color-primary-darker: #dcdcdc;
-  --ifm-color-primary-darkest: #c9c9c9;
-  --ifm-color-primary-light: #f2f2f2;
-  --ifm-color-primary-lighter: #f5f5f5;
-  --ifm-color-primary-lightest: #fafafa;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+/* ---------------------------------------------------------------------------
+ * Paleta — modo escuro (padrão): céu noturno com leve tinta azul
+ * ------------------------------------------------------------------------- */
 
-  /* Footer */
-  --ifm-footer-background-color: #000000;
-  --ifm-footer-color: rgba(255, 255, 255, 0.7);
-  --ifm-footer-link-color: rgba(255, 255, 255, 0.8);
-  --ifm-footer-link-hover-color: #ffffff;
+[data-theme="dark"] {
+  --background: oklch(0.155 0.014 262);
+  --foreground: oklch(0.955 0.004 260);
+  --card: oklch(0.195 0.016 262);
+  --card-foreground: oklch(0.955 0.004 260);
+  --popover: oklch(0.205 0.016 262);
+  --popover-foreground: oklch(0.955 0.004 260);
+  --primary: oklch(0.93 0.005 260);
+  --primary-foreground: oklch(0.185 0.014 262);
+  --secondary: oklch(0.26 0.016 262);
+  --secondary-foreground: oklch(0.955 0.004 260);
+  --muted: oklch(0.26 0.016 262);
+  --muted-foreground: oklch(0.72 0.012 260);
+  --accent: oklch(0.26 0.016 262);
+  --accent-foreground: oklch(0.955 0.004 260);
+  --destructive: oklch(0.704 0.191 22.2);
+  --destructive-foreground: oklch(0.704 0.191 22.2);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.56 0.01 260);
+  --comet: oklch(0.78 0.105 248);
+
+  /* Infima */
+  --ifm-background-color: oklch(0.155 0.014 262);
+  --ifm-background-surface-color: oklch(0.185 0.015 262);
+  --ifm-color-content: oklch(0.90 0.005 260);
+  --ifm-color-content-secondary: oklch(0.72 0.012 260);
+
+  --ifm-color-primary: oklch(0.78 0.105 248);
+  --ifm-color-primary-dark: oklch(0.73 0.11 248);
+  --ifm-color-primary-darker: oklch(0.70 0.11 248);
+  --ifm-color-primary-darkest: oklch(0.62 0.115 248);
+  --ifm-color-primary-light: oklch(0.82 0.095 248);
+  --ifm-color-primary-lighter: oklch(0.85 0.085 248);
+  --ifm-color-primary-lightest: oklch(0.89 0.07 248);
+
+  --docusaurus-highlighted-code-line-bg: oklch(0.3 0.03 252 / 45%);
+
+  --ifm-navbar-background-color: oklch(0.155 0.014 262 / 78%);
+  --ifm-toc-border-color: var(--border);
+  --ifm-table-border-color: var(--border);
+  --ifm-hr-background-color: var(--border);
+
+  --ifm-footer-background-color: oklch(0.135 0.013 262);
+  --ifm-footer-color: oklch(0.66 0.012 260);
+  --ifm-footer-link-color: oklch(0.78 0.01 260);
+  --ifm-footer-link-hover-color: oklch(0.955 0.004 260);
+  --ifm-footer-title-color: oklch(0.955 0.004 260);
+
+  --ifm-menu-color: oklch(0.78 0.01 260);
+  --ifm-menu-color-background-active: oklch(1 0 0 / 7%);
+  --ifm-menu-color-background-hover: oklch(1 0 0 / 5%);
+  --ifm-breadcrumb-item-background-active: oklch(1 0 0 / 7%);
 }
 
-/* Footer overrides */
-.footer {
-  background-color: #000000 !important;
+/* ---------------------------------------------------------------------------
+ * Tipografia
+ * ------------------------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6,
+.markdown h1, .markdown h2, .markdown h3 {
+  font-family: var(--ifm-heading-font-family);
+  letter-spacing: -0.015em;
 }
 
-.footer__title {
-  color: #ffffff !important;
+.markdown {
+  --ifm-h1-font-size: 2.1rem;
+  --ifm-h2-font-size: 1.5rem;
+  --ifm-h3-font-size: 1.17rem;
+  line-height: 1.7;
 }
 
-.footer__link-item {
-  color: rgba(255, 255, 255, 0.8) !important;
+.markdown h2 {
+  margin-top: 2.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--border);
 }
 
-.footer__link-item:hover {
-  color: #ffffff !important;
+.markdown h2:first-of-type {
+  border-top: none;
+  padding-top: 0;
 }
 
-.footer__link.subtitle {
-  color: rgba(255, 255, 255, 0.7) !important;
+/* ---------------------------------------------------------------------------
+ * Navbar — vidro fosco com borda inferior
+ * ------------------------------------------------------------------------- */
+
+.navbar {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
 }
 
-.footer__bottom {
-  border-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-.footer__copyright {
-  color: rgba(255, 255, 255, 0.7) !important;
-}
-
-/* Code blocks — pure black */
-pre {
-  background-color: #000000 !important;
-}
-
-pre code {
-  background-color: transparent !important;
-}
-
-code {
-  background-color: rgba(0, 0, 0, 0.08) !important;
-}
-
-[data-theme='dark'] code {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Hero — light mode: white bg, dark mode: dark bg */
-.hero--primary {
-  background-color: #f5f5f5 !important;
-}
-
-.hero--primary .hero__title,
-.hero--primary .hero__subtitle {
-  color: #1a1a1a !important;
-}
-
-[data-theme='dark'] .hero--primary {
-  background-color: #0a0a0a !important;
-}
-
-[data-theme='dark'] .hero--primary .hero__title,
-[data-theme='dark'] .hero--primary .hero__subtitle {
-  color: #ffffff !important;
-}
-
-/* Navbar logo — force size and alignment */
 .navbar__logo {
-  display: flex !important;
-  align-items: center !important;
+  display: flex;
+  align-items: center;
 }
 
 .navbar__logo img {
-  height: 20px !important;
-  width: auto !important;
-  object-fit: contain !important;
+  height: 18px;
+  width: auto;
+  object-fit: contain;
 }
 
-/* Light mode: invert white logo to black */
-html:not([data-theme='dark']) .navbar__logo img {
+html:not([data-theme="dark"]) .navbar__logo img {
   filter: invert(1);
 }
 
-/* Hero buttons — light mode */
-.hero-button-primary {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-  border: none !important;
-  font-weight: 600 !important;
+.navbar__link {
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-.hero-button-primary:hover {
-  background-color: #333333 !important;
-  color: #ffffff !important;
-  text-decoration: none !important;
+/* ---------------------------------------------------------------------------
+ * Sidebar e TOC
+ * ------------------------------------------------------------------------- */
+
+.menu {
+  font-size: 0.875rem;
+  font-weight: 450;
+  padding: 0.75rem !important;
 }
 
-.hero-button-outline {
-  background-color: transparent !important;
-  color: #1a1a1a !important;
-  border: 1px solid rgba(0, 0, 0, 0.2) !important;
-  font-weight: 600 !important;
+.menu__link {
+  border-radius: 8px;
 }
 
-.hero-button-outline:hover {
-  background-color: rgba(0, 0, 0, 0.05) !important;
-  color: #1a1a1a !important;
-  text-decoration: none !important;
+.menu__link--active:not(.menu__link--sublist) {
+  font-weight: 600;
 }
 
-/* Hero buttons — dark mode */
-[data-theme='dark'] .hero-button-primary {
-  background-color: #ffffff !important;
-  color: #0a0a0a !important;
+.menu__list-item-collapsible {
+  border-radius: 8px;
 }
 
-[data-theme='dark'] .hero-button-primary:hover {
-  background-color: #e5e5e5 !important;
-  color: #0a0a0a !important;
+.theme-doc-sidebar-item-category > .menu__list-item-collapsible > .menu__link {
+  font-family: var(--ifm-heading-font-family);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ifm-color-content-secondary);
 }
 
-[data-theme='dark'] .hero-button-outline {
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
+.table-of-contents {
+  font-size: 0.8rem;
 }
 
-[data-theme='dark'] .hero-button-outline:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
+.table-of-contents__link--active {
+  font-weight: 600;
+}
+
+/* ---------------------------------------------------------------------------
+ * Código
+ * ------------------------------------------------------------------------- */
+
+pre,
+div[class*="codeBlockContainer"] {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] pre,
+[data-theme="dark"] div[class*="codeBlockContainer"] {
+  --prism-background-color: oklch(0.13 0.012 262);
+  background-color: oklch(0.13 0.012 262);
+}
+
+html:not([data-theme="dark"]) pre,
+html:not([data-theme="dark"]) div[class*="codeBlockContainer"] {
+  background-color: oklch(0.975 0.003 260);
+}
+
+code {
+  border: 1px solid var(--border);
+  background-color: var(--muted);
+  vertical-align: baseline;
+}
+
+pre code {
+  border: none;
+  background-color: transparent;
+}
+
+/* ---------------------------------------------------------------------------
+ * Tabelas, admonitions, cards de navegação
+ * ------------------------------------------------------------------------- */
+
+table {
+  display: table;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+table thead {
+  background-color: var(--muted);
+}
+
+table th {
+  font-family: var(--ifm-heading-font-family);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ifm-color-content-secondary);
+}
+
+table tr:nth-child(2n) {
+  background-color: transparent;
+}
+
+.theme-admonition {
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-left-width: 3px;
+  box-shadow: none;
+}
+
+.pagination-nav__link {
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.pagination-nav__link:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+.card {
+  border: 1px solid var(--border);
+  box-shadow: none !important;
+}
+
+/* ---------------------------------------------------------------------------
+ * Footer
+ * ------------------------------------------------------------------------- */
+
+.footer {
+  border-top: 1px solid var(--border);
+  font-size: 0.875rem;
+}
+
+.footer__title {
+  font-family: var(--ifm-heading-font-family);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.footer__copyright {
+  font-size: 0.8rem;
+  color: var(--ifm-footer-color);
+}
+
+/* ---------------------------------------------------------------------------
+ * Assinatura visual: campo de estrelas + trajetória do cometa (sem gradiente)
+ * ------------------------------------------------------------------------- */
+
+.sc-starfield {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 12% 28%, oklch(1 0 0 / 32%) 50%, transparent 51%),
+    radial-gradient(1px 1px at 26% 68%, oklch(1 0 0 / 20%) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 38% 18%, oklch(1 0 0 / 28%) 50%, transparent 51%),
+    radial-gradient(1px 1px at 54% 44%, oklch(1 0 0 / 18%) 50%, transparent 51%),
+    radial-gradient(1px 1px at 67% 76%, oklch(1 0 0 / 26%) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 78% 24%, oklch(1 0 0 / 30%) 50%, transparent 51%),
+    radial-gradient(1px 1px at 88% 58%, oklch(1 0 0 / 20%) 50%, transparent 51%),
+    radial-gradient(1px 1px at 44% 86%, oklch(1 0 0 / 16%) 50%, transparent 51%);
+}
+
+html:not([data-theme="dark"]) .sc-starfield {
+  opacity: 0.35;
+  filter: invert(1);
+}
+
+.sc-comet {
+  position: absolute;
+  top: 22%;
+  right: -4%;
+  width: 46%;
+  height: 1px;
+  background-color: var(--comet);
+  opacity: 0.55;
+  transform: rotate(-14deg);
+  transform-origin: right center;
+  pointer-events: none;
+}
+
+.sc-comet::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background-color: var(--comet);
+  transform: translateY(-50%);
+  box-shadow: 0 0 12px 2px var(--comet);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sc-comet {
+    animation: sc-comet-drift 9s ease-in-out infinite alternate;
+  }
+
+  @keyframes sc-comet-drift {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: -2.5rem 1.25rem;
+    }
+  }
 }

@@ -1,30 +1,45 @@
 ---
 title: Configurações
+description: Gerenciamento de perfil, segurança, plano e sessão na plataforma SleepComet.
 ---
 
-# Configurações da Conta
+# Configurações da conta
 
-Acesse `/settings` para gerenciar sua conta.
+A página **Configurações** (`/settings`) centraliza o gerenciamento do seu perfil, da segurança e do plano contratado.
 
 ## Perfil
 
-- **Nome**: Altere seu nome de exibição
-- **Avatar**: Upload ou remoção de foto de perfil
+| Ação | Descrição |
+|---|---|
+| **Nome de exibição** | Altere o nome mostrado na plataforma e nas notificações. |
+| **Avatar** | Envie uma imagem de perfil ou remova a atual. |
 
 ## Segurança
 
-- **Alterar senha**: Requer senha atual + nova senha
+- **Alterar senha** — requer a senha atual e a nova senha. Ao confirmar, as demais sessões ativas são encerradas por segurança.
 
-## Plataforma
+Para detalhes sobre métodos de login e sessões, consulte [Autenticação](/account/auth).
 
-- **Plano atual**: Visualize seu plano e créditos
-- **Upgrade**: Acesse o Stripe Checkout para mudar de plano
-- **Logout**: Encerre a sessão atual
+## Plano e créditos
 
-## Checkout
+A seção **Plano atual** exibe:
 
-O redirecionamento para `/checkout` é tratado automaticamente após:
+- O plano contratado e o ciclo de faturamento;
+- O saldo de créditos disponível no ciclo — consulte [Créditos](/account/credits);
+- O botão **Fazer upgrade**, que abre o checkout do Stripe.
 
-- Selecionar um plano na página de preços
-- Completar o pagamento no Stripe
-- Retorno ao app com status de sucesso/cancelamento
+### Fluxo de upgrade
+
+1. Clique em **Fazer upgrade** e selecione o plano desejado;
+2. Complete o pagamento no ambiente seguro do Stripe;
+3. Ao retornar ao aplicativo, o novo plano e os créditos correspondentes já estão ativos.
+
+O redirecionamento para `/checkout` e o retorno com status de sucesso ou cancelamento são tratados automaticamente pela plataforma. A gestão da assinatura (método de pagamento, faturas, cancelamento) é feita pelo [portal do cliente Stripe](/api/credits#portal-do-cliente).
+
+## Sessão
+
+- **Sair** — encerra a sessão atual no dispositivo em uso.
+
+---
+
+**Próximos passos:** [Planos e preços](/account/pricing) · [Créditos](/account/credits)

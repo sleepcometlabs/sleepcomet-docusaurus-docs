@@ -1,83 +1,89 @@
 ---
 title: Templates de Legendas
+description: Referência completa do sistema de templates — tipografia, cores, animações, posicionamento, marca d'água e o formato ASS.
 ---
 
-# Templates de Legendas
+# Templates de legendas
 
-Crie e gerencie estilos visuais personalizados para suas legendas.
+O template de legenda define toda a identidade visual dos seus cortes: tipografia, cores, animação, posicionamento e marca d'água. A plataforma inclui 12 templates prontos e um editor completo para criar os seus.
 
-## Acesso
+:::info Fidelidade total
+A prévia do editor usa as mesmas fontes, a mesma escala e as mesmas animações do renderizador. O que você vê no editor é exatamente o que será queimado no vídeo final.
+:::
 
-Acesse `/caption-templates` no menu lateral ou clique em "Gerenciar modelos" no painel de configuração.
+## Gerenciador de templates
 
-## Template Manager
+Acesse `/caption-templates` no menu lateral ou por **Gerenciar modelos** no painel de configuração. O gerenciador permite:
 
-O gerenciador permite:
+- **Criar** templates do zero;
+- **Editar** e **duplicar** templates existentes;
+- **Excluir** templates personalizados;
+- **Definir como padrão** para novos projetos.
 
-- **Criar** novos templates do zero
-- **Editar** templates existentes
-- **Duplicar** templates como base
-- **Excluir** templates personalizados
-- **Definir como padrão** para novos projetos
-
-## Propriedades do Template
+## Propriedades do template
 
 ### Tipografia
 
 | Campo | Descrição | Valores |
 |---|---|---|
-| `fontFamily` | Fonte principal | Nomes de fontes do sistema ou custom |
-| `fontStack` | CSS font-stack completo | `'Fonte', 'Arial', sans-serif` |
-| `fontSize` | Tamanho da fonte | 16–90 (escalado proporcionalmente; preview usa `fontSize * 0.52`px, igual à escala real do ASS) |
-| `fontColor` | Cor do texto | Hex (#FFFFFF) |
+| `fontFamily` | Fonte principal | Uma das [fontes integradas](/features/fonts) ou customizada (Pro+) |
+| `fontStack` | Font-stack CSS completo para a prévia | `'Fonte', 'Arial', sans-serif` |
+| `fontSize` | Tamanho da fonte | 16–90 (a prévia usa `fontSize × 0,52`px — a mesma escala do renderizador) |
+| `fontColor` | Cor do texto | Hexadecimal (`#FFFFFF`) |
 
-### Cores
+### Cores e fundo
 
 | Campo | Descrição |
 |---|---|
-| `highlightColor` | Cor de destaque para palavras ativas (karaoke) |
-| `strokeColor` | Cor da borda/contorno |
-| `strokeWidth` | Espessura da borda (0–6; preview usa `strokeWidth * 0.7`px, igual à escala real do ASS) |
-| `background` | Habilitar fundo caixa |
-| `backgroundColor` | Cor do fundo (#RRGGBBAA) |
+| `highlightColor` | Cor de destaque da palavra ativa (animações por palavra) |
+| `strokeColor` | Cor do contorno |
+| `strokeWidth` | Espessura do contorno (0–6; prévia usa `strokeWidth × 0,7`px, a escala real do ASS) |
+| `background` | Habilita a caixa de fundo |
+| `backgroundColor` | Cor do fundo (`#RRGGBBAA`) |
 | `backgroundOpacity` | Opacidade do fundo (0–100%) |
-| `wordSpacing` | Espaçamento entre palavras, `\fsp` no ASS (0–20px) |
+| `wordSpacing` | Espaçamento entre palavras (`\fsp` no ASS, 0–20 px) |
 
 ### Animação
 
-Duas famílias, no padrão das plataformas de cortes virais (OpusClip/SubMagic/CapCut) —
-**por palavra** (o efeito acontece na palavra falada, cronometrado ao timestamp real do
-Whisper, um `Dialogue` ASS por palavra) e **entrada** (o trecho inteiro entra com uma
-transformação, um `Dialogue` por trecho):
+As animações se dividem em duas famílias, no padrão das plataformas de cortes virais:
 
-| Tipo | Família | Descrição real (idêntica no preview e no vídeo renderizado) |
+- **Por palavra** — o efeito acontece na palavra falada, cronometrado ao timestamp real do Whisper (um `Dialogue` ASS por palavra);
+- **Entrada** — o trecho inteiro entra com uma transformação (um `Dialogue` por trecho).
+
+| Tipo | Família | Comportamento (idêntico na prévia e no vídeo) |
 |---|---|---|
 | `none` | — | Estático, cor única, sem movimento |
 | `karaoke` | Por palavra | Todas as palavras visíveis; a falada troca para a cor de destaque |
-| `word` | Por palavra | Reveal cumulativo: só as palavras já faladas ficam visíveis, a frase cresce palavra a palavra |
-| `highlight` | Por palavra | Todas visíveis; a falada ganha uma caixa na cor de destaque (estilo Hormozi — `\bord` gordo com `\3c` no ASS) |
-| `pop` | Por palavra | Todas visíveis; a falada entra com scale-in rápido (0.75→1.0 em 140ms) |
-| `bounce` | Por palavra | Todas visíveis; a falada entra com overshoot elástico (0.6→1.15→1.0 em 260ms) |
-| `fade` | Entrada | Fade in/out do trecho, 350ms (`\fad(350,350)`) |
-| `smooth` | Entrada | Fade + deslize sutil de baixo para cima (`\move` de ~1.5% da altura em 300ms + `\fad(250,250)`) |
-| `scale` | Entrada | Trecho inteiro escala 0.50→1.0 em 300ms ao aparecer |
+| `word` | Por palavra | Reveal cumulativo — a frase cresce palavra a palavra |
+| `highlight` | Por palavra | A palavra falada ganha uma caixa na cor de destaque (estilo Hormozi) |
+| `pop` | Por palavra | A palavra falada entra com scale-in rápido (0,75→1,0 em 140 ms) |
+| `bounce` | Por palavra | A palavra falada entra com overshoot elástico (0,6→1,15→1,0 em 260 ms) |
+| `fade` | Entrada | Fade in/out do trecho (350 ms) |
+| `smooth` | Entrada | Fade + deslize sutil de baixo para cima |
+| `scale` | Entrada | O trecho escala de 0,5 a 1,0 em 300 ms |
+
+A referência detalhada de cada animação está em [Animações](/features/animations).
 
 ### Posicionamento
 
 | Campo | Descrição |
 |---|---|
-| `positionY` | Posição vertical (10–90%, sempre clampada entre 5% e 90% da altura do vídeo pelo worker) |
+| `positionY` | Posição vertical da legenda (10–90%). Na renderização, o worker limita o valor entre 5% e 90% da altura do vídeo. |
 
-### Marca d'Água
+:::tip Zona segura
+Para TikTok e Instagram, posicione entre 70% e 80% para evitar a interface das redes. Veja [Boas práticas](/best-practices#templates-de-legenda).
+:::
+
+### Marca d'água
 
 | Campo | Descrição |
 |---|---|
-| `watermarkEnabled` | Habilitar marca d'água — plano Free não pode desabilitar (reforçado no momento de criar o job, não só ao salvar o template) |
-| `watermarkOpacity` | Opacidade, escala 0–100% |
-| `watermarkPosition` | Posição: `top-left`, `top-right`, `bottom-left`, `bottom-right`, `center` (`bottom-center` é um valor legado, ainda lido para templates antigos mas nunca mais gravado) |
-| `watermarkSize` | Tamanho relativo ao padrão, 50–150% (100 = tamanho padrão atual) |
+| `watermarkEnabled` | Habilita a marca d'água. **No plano Free não pode ser desabilitada** — a regra é reforçada no servidor ao criar o job. |
+| `watermarkOpacity` | Opacidade (0–100%) |
+| `watermarkPosition` | `top-left`, `top-right`, `bottom-left`, `bottom-right`, `center` (`bottom-center` é valor legado — ainda lido em templates antigos, nunca mais gravado) |
+| `watermarkSize` | Tamanho relativo (50–150%; 100 = tamanho padrão) |
 
-## Templates Built-in
+## Templates prontos
 
 | Template | Estilo |
 |---|---|
@@ -86,7 +92,7 @@ transformação, um `Dialogue` por trecho):
 | MrBeast | Amarelo grande com vermelho |
 | Minimal | Clean, fundo transparente |
 | TikTok | Estilo TikTok, rosa |
-| Neon | Efeito neon ciano/magenta |
+| Neon | Ciano/magenta com efeito neon |
 | Podcast | Profissional, fundo escuro |
 | Gaming | Verde neon, fundo escuro |
 | Cinematic | Branco com scale reveal |
@@ -94,9 +100,9 @@ transformação, um `Dialogue` por trecho):
 | Smooth Talker | Branco suave com fade |
 | High Energy | Laranja bold com bounce |
 
-## Formato de Subtitle (ASS)
+## Formato de saída (ASS)
 
-Os templates são convertidos para o formato ASS (Advanced SubStation Alpha):
+Os templates são convertidos para o formato **ASS (Advanced SubStation Alpha)** antes da renderização:
 
 ```ass
 [V4+ Styles]
@@ -108,9 +114,9 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 0,0:00:01.00,0:00:03.00,Default,,0,0,0,,{\pos(540,1440)}Texto da legenda
 ```
 
-## JSON Custom Template
+## Template customizado em JSON
 
-Templates customizados são enviados ao worker como JSON:
+Templates personalizados chegam ao worker como JSON:
 
 ```json
 {
@@ -132,13 +138,12 @@ Templates customizados são enviados ao worker como JSON:
 }
 ```
 
-O worker converte camelCase para snake_case e mescla com o template `default` como base.
-`positionY` e `watermarkOpacity` aceitam tanto fração (0–1) quanto percentual (>1, dividido por
-100 automaticamente) — mas a API e os dois editores sempre enviam percentual.
+Observações técnicas:
 
-Esse JSON pode chegar ao worker de duas formas: como `captionTemplate` de um template salvo
-(resolvido e revalidado pela API no momento de criar o job, incluindo o plano atual do usuário)
-ou embutido diretamente na requisição de criação de projeto. Nos dois casos a API agora clampa
-todo campo numérico/enum antes de publicar o job — um valor fora do range ou um plano Free
-tentando desabilitar a marca d'água é corrigido silenciosamente, não apenas confiado no valor
-enviado pelo cliente.
+- O worker converte camelCase para snake_case e mescla o JSON com o template `default` como base;
+- `positionY` e `watermarkOpacity` aceitam fração (0–1) ou percentual (>1, dividido por 100 automaticamente) — a API e os editores sempre enviam percentual;
+- O JSON pode chegar ao worker como um template salvo (resolvido e revalidado pela API ao criar o job, incluindo o plano atual do usuário) ou embutido na criação do projeto. **Nos dois casos, a API ajusta todo campo numérico e de enumeração para a faixa válida antes de publicar o job** — valores fora do range são corrigidos silenciosamente, e um plano Free não consegue desabilitar a marca d'água.
+
+---
+
+**Próximos passos:** [Animações](/features/animations) · [Sistema de fontes](/features/fonts) · [API de templates](/api/caption-templates)

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#10141F"/>
+  <!-- estrelas -->
+  <circle cx="140" cy="120" r="2" fill="#F4F6FB" opacity="0.8"/>
+  <circle cx="320" cy="80" r="1.5" fill="#F4F6FB" opacity="0.5"/>
+  <circle cx="520" cy="150" r="2" fill="#F4F6FB" opacity="0.6"/>
+  <circle cx="760" cy="90" r="1.5" fill="#F4F6FB" opacity="0.7"/>
+  <circle cx="980" cy="170" r="2" fill="#F4F6FB" opacity="0.5"/>
+  <circle cx="1100" cy="90" r="1.5" fill="#F4F6FB" opacity="0.8"/>
+  <circle cx="220" cy="520" r="1.5" fill="#F4F6FB" opacity="0.4"/>
+  <circle cx="900" cy="540" r="2" fill="#F4F6FB" opacity="0.5"/>
+  <circle cx="1080" cy="440" r="1.5" fill="#F4F6FB" opacity="0.6"/>
+  <!-- cometa -->
+  <line x1="820" y1="250" x2="1150" y2="130" stroke="#8FBCF9" stroke-width="4" stroke-linecap="round" opacity="0.9"/>
+  <circle cx="820" cy="250" r="9" fill="#8FBCF9"/>
+  <!-- lua -->
+  <circle cx="150" cy="420" r="70" fill="#F4F6FB"/>
+  <circle cx="183" cy="388" r="65" fill="#10141F"/>
+  <!-- texto -->
+  <text x="300" y="400" font-family="'Space Grotesk', 'Segoe UI', sans-serif" font-size="88" font-weight="700" fill="#F4F6FB" letter-spacing="-2">SleepComet</text>
+  <text x="304" y="460" font-family="'Inter', 'Segoe UI', sans-serif" font-size="34" fill="#9AA6BC">Documentação oficial da plataforma</text>
+  <text x="304" y="540" font-family="'JetBrains Mono', monospace" font-size="24" fill="#8FBCF9">docs.sleepcomet.com</text>
+</svg>

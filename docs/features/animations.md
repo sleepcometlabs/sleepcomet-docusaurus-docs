@@ -1,63 +1,87 @@
 ---
 title: Animações
+description: Referência das 9 animações de legenda — famílias por palavra e de entrada, temporização e overrides ASS.
 ---
 
-# Animações de Legendas
+# Animações de legendas
 
-O Sleepcomet suporta 9 tipos de animação para legendas.
+O SleepComet oferece **9 tipos de animação**, divididos em duas famílias. A escolha certa depende do ritmo do conteúdo — consulte as [boas práticas](/best-practices#templates-de-legenda) para recomendações de uso.
 
-## Tipos Disponíveis
+## As duas famílias
 
-### None
-Sem animação. Aparece e desaparece instantaneamente.
+| Família | Comportamento | Unidade no ASS |
+|---|---|---|
+| **Por palavra** | O efeito acontece na palavra falada, cronometrado ao timestamp real do Whisper | Um `Dialogue` por palavra |
+| **Entrada** | O trecho inteiro entra na tela com uma transformação | Um `Dialogue` por trecho |
 
-### Karaoke
-Destaca cada palavra individualmente enquanto é falada. Usa a `highlightColor` do template.
+## Referência completa
 
-### Pop
-Efeito de escala: começa em 92%, cresce para 108%, depois estabiliza em 100%. Duração: 260ms.
+### `none`
 
-### Fade
-Fade in/out suave com duração de 150ms em cada direção.
+Sem animação. O trecho aparece e desaparece instantaneamente, em cor única. Indicado para conteúdo sóbrio e informativo.
 
-### Bounce
-Efeito de quicada: começa em 80%, sobe para 115%, estabiliza em 100%. Duração: 300ms.
+### `karaoke` — por palavra
 
-### Word
-Aparecimento palavra por palavra, similar ao karaoke mas sem destaque de cor.
+Todas as palavras ficam visíveis; a palavra falada troca para a `highlightColor` do template. O clássico das plataformas de cortes.
 
-### Scale
-Reveal com escala: começa em 50%, cresce para 100%. Duração: 250ms.
+### `word` — por palavra
 
-### Smooth
-Transição suave com fade de 250ms.
+Reveal cumulativo: apenas as palavras já faladas ficam visíveis, e a frase cresce palavra a palavra.
 
-### Highlight
-Destaque progressivo das palavras com cor de destaque.
+### `highlight` — por palavra
 
-## Chunk Size
+Todas as palavras visíveis; a falada ganha uma **caixa** na cor de destaque (estilo Hormozi — `\bord` espesso com `\3c` no ASS). Alto impacto em falas enfáticas.
 
-Cada animação define o tamanho do "chunk" (palavras por grupo):
+### `pop` — por palavra
 
-| Animação | Chunk Size |
+A palavra falada entra com um scale-in rápido: 0,75 → 1,0 em 140 ms.
+
+### `bounce` — por palavra
+
+A palavra falada entra com overshoot elástico: 0,6 → 1,15 → 1,0 em 260 ms. Indicada para conteúdo de alta energia.
+
+### `fade` — entrada
+
+Fade in/out do trecho inteiro, com 350 ms em cada direção (`\fad(350,350)`). Indicada para conteúdo calmo e narrativo.
+
+### `smooth` — entrada
+
+Fade combinado com um deslize sutil de baixo para cima (`\move` de ~1,5% da altura em 300 ms + `\fad(250,250)`).
+
+### `scale` — entrada
+
+O trecho inteiro escala de 0,5 a 1,0 em 300 ms ao aparecer.
+
+## Agrupamento de palavras (chunks)
+
+As animações de entrada exibem o texto em grupos de palavras. O tamanho do grupo varia por animação:
+
+| Animação | Palavras por grupo |
 |---|---|
-| minimal | 6 palavras |
-| fade, none | 4 palavras |
-| Outras | 3 palavras |
+| Estilo minimal | 6 |
+| `fade`, `none` | 4 |
+| Demais | 3 |
 
-## Exemplo de Override ASS
+## Exemplos de override ASS
 
-Animação `pop`:
-```
-{\fscx92\fscy92\t(0,140,\fscx108\fscy108)\t(140,260,\fscx100\fscy100)}
+Para quem trabalha diretamente com os arquivos de legenda exportados:
+
+```text
+; pop (por palavra)
+{\fscx75\fscy75\t(0,140,\fscx100\fscy100)}
+
+; bounce (por palavra)
+{\fscx60\fscy60\t(0,120,\fscx115\fscy115)\t(120,260,\fscx100\fscy100)}
+
+; fade (entrada)
+{\fad(350,350)}
+
+; scale (entrada)
+{\fscx50\fscy50\t(0,300,\fscx100\fscy100)}
 ```
 
-Animação `bounce`:
-```
-{\fscx80\fscy80\t(0,180,\fscx115\fscy115)\t(180,300,\fscx100\fscy100)}
-```
+A geração completa dos arquivos ASS está documentada em [Sistema de legendas do worker](/api/worker-subtitles).
 
-Animação `fade`:
-```
-{\fad(150,150)}
-```
+---
+
+**Próximos passos:** [Templates de legendas](/features/caption-templates) · [Sistema de fontes](/features/fonts)

@@ -1,16 +1,21 @@
 ---
 title: Projetos
+description: CRUD completo de projetos — criação, listagem, detalhe com clipes, cancelamento e exclusão.
 ---
 
-# API de Projetos
+# API de projetos
 
-## Listar Projetos
+O projeto é o recurso central da API: representa um vídeo enviado para processamento, com suas configurações, status e clipes resultantes.
+
+## Listar projetos
 
 ```
 GET /projects
 ```
 
-**Response:**
+Aceita [paginação](/api/errors#paginação) (`page`, `limit`).
+
+**Resposta:**
 
 ```json
 {
@@ -21,14 +26,14 @@ GET /projects
       "sourceUrl": "https://youtube.com/watch?v=...",
       "durationSec": 300,
       "duration": "5:00",
-      "date": "2025-01-15",
+      "date": "2026-07-09",
       "clips": 8,
       "status": "Concluído",
       "thumbnail": "https://...",
       "stepProgress": {},
       "captionTemplate": "tiktok",
-      "createdAt": "2025-01-15T10:00:00Z",
-      "updatedAt": "2025-01-15T10:05:00Z"
+      "createdAt": "2026-07-09T10:00:00Z",
+      "updatedAt": "2026-07-09T10:05:00Z"
     }
   ],
   "total": 25,
@@ -37,7 +42,7 @@ GET /projects
 }
 ```
 
-## Criar Projeto
+## Criar projeto
 
 ```
 POST /projects
@@ -48,7 +53,7 @@ POST /projects
 ```json
 {
   "sourceUrl": "https://youtube.com/watch?v=...",
-  "title": "Título Opcional",
+  "title": "Título opcional",
   "thumbnail": "https://...",
   "durationSec": 300,
   "clipDurationPreset": "auto",
@@ -59,15 +64,15 @@ POST /projects
 
 | Campo | Tipo | Obrigatório | Descrição |
 |---|---|---|---|
-| `sourceUrl` | string | Sim | URL do vídeo |
-| `title` | string | Não | Título personalizado |
-| `thumbnail` | string | Não | Thumbnail URL |
-| `durationSec` | number | Não | Duração em segundos |
+| `sourceUrl` | string | Sim* | URL do vídeo (YouTube/Vimeo). *Alternativa: `fileKey` de um [upload](/api/videos#upload-de-arquivo). |
+| `title` | string | Não | Título personalizado do projeto |
+| `thumbnail` | string | Não | URL da thumbnail |
+| `durationSec` | number | Não | Duração do trecho, em segundos |
 | `clipDurationPreset` | string | Não | `auto`, `15-30`, `30-60`, `60-90` |
-| `captionTemplate` | string | Não | ID do template ou JSON customizado |
-| `skipCuts` | boolean | Não | Pular geração de clipes |
+| `captionTemplate` | string | Não | ID de um template salvo **ou** JSON de [template customizado](/features/caption-templates#template-customizado-em-json) |
+| `skipCuts` | boolean | Não | `true` para apenas transcrever/legendar, sem gerar cortes |
 
-**Response:** `201 Created`
+**Resposta:** `201 Created`
 
 ```json
 {
@@ -76,13 +81,17 @@ POST /projects
 }
 ```
 
-## Detalhe do Projeto
+:::info Validação no servidor
+A criação verifica o saldo de créditos e ajusta os parâmetros do template para as faixas válidas antes de publicar o job. Veja [Erros e convenções](/api/errors#validação-e-ajuste-no-servidor).
+:::
+
+## Detalhe do projeto
 
 ```
 GET /projects/:id
 ```
 
-**Response:**
+**Resposta:**
 
 ```json
 {
@@ -96,8 +105,8 @@ GET /projects/:id
       "duration": "0:30",
       "quality": "1080p",
       "thumbnail": "https://...",
-      "url": "https://r2...",
-      "subtitleUrl": "https://r2...",
+      "url": "https://...",
+      "subtitleUrl": "https://...",
       "startSec": 120,
       "endSec": 150,
       "transcripts": [
@@ -108,24 +117,34 @@ GET /projects/:id
           "text": "Texto da transcrição"
         }
       ],
-      "createdAt": "2025-01-15T10:05:00Z"
+      "createdAt": "2026-07-09T10:05:00Z"
     }
   ]
 }
 ```
 
-## Excluir Projeto
-
-```
-DELETE /projects/:id
-```
-
-**Response:** `{ "projectId": "uuid", "deleted": true }`
-
-## Cancelar Processamento
+## Cancelar processamento
 
 ```
 POST /projects/:id/cancel
 ```
 
-**Response:** `{ "projectId": "uuid", "status": "Cancelado" }`
+Cancela um processamento em andamento. O projeto é removido e **nenhum crédito é cobrado**.
+
+**Resposta:** `{ "projectId": "uuid", "status": "Cancelado" }`
+
+## Excluir projeto
+
+```
+DELETE /projects/:id
+```
+
+**Resposta:** `{ "projectId": "uuid", "deleted": true }`
+
+## Status em tempo real
+
+O progresso do processamento é transmitido via Server-Sent Events em `GET /projects/:id/status` — documentado em [SSE Status](/api/sse-status).
+
+---
+
+**Próximos passos:** [SSE Status](/api/sse-status) · [Clipes](/api/clips)

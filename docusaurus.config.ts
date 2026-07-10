@@ -1,11 +1,13 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import tailwindPostcss from '@tailwindcss/postcss';
 
 const config: Config = {
-  title: 'Sleepcomet Docs',
-  tagline: 'Documentação da plataforma Sleepcomet',
-  favicon: 'img/favicon.ico',
+  title: 'SleepComet Docs',
+  tagline:
+    'Documentação oficial do SleepComet — a plataforma de IA que transforma vídeos longos em cortes prontos para publicar.',
+  favicon: 'img/favicon.svg',
 
   future: {
     v4: true,
@@ -24,6 +26,37 @@ const config: Config = {
     locales: ['pt-BR'],
   },
 
+  headTags: [
+    {
+      tagName: 'link',
+      attributes: {rel: 'preconnect', href: 'https://fonts.googleapis.com'},
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossorigin: 'anonymous',
+      },
+    },
+  ],
+
+  stylesheets: [
+    'https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap',
+  ],
+
+  plugins: [
+    async function tailwindV4Plugin() {
+      return {
+        name: 'tailwind-v4',
+        configurePostCss(postcssOptions) {
+          postcssOptions.plugins.push(tailwindPostcss);
+          return postcssOptions;
+        },
+      };
+    },
+  ],
+
   presets: [
     [
       'classic',
@@ -41,7 +74,7 @@ const config: Config = {
   ],
 
   themeConfig: {
-    image: 'img/social-card.png',
+    image: 'img/social-card.svg',
     colorMode: {
       defaultMode: 'dark',
       respectPrefersColorScheme: true,
@@ -49,7 +82,7 @@ const config: Config = {
     navbar: {
       title: '',
       logo: {
-        alt: 'Sleepcomet',
+        alt: 'SleepComet',
         src: 'img/logo-letter-white.png',
         srcDark: 'img/logo-letter-white.png',
       },
@@ -73,8 +106,8 @@ const config: Config = {
           label: 'API',
         },
         {
-          href: 'https://sleepcomet.com',
-          label: 'Plataforma',
+          href: 'https://app.sleepcomet.com',
+          label: 'Abrir o app',
           position: 'right',
         },
       ],
@@ -83,35 +116,43 @@ const config: Config = {
       style: 'dark',
       links: [
         {
-          title: 'Plataforma',
+          title: 'Produto',
           items: [
-            { label: 'App', href: 'https://app.sleepcomet.com' },
-            { label: 'Preços', href: 'https://sleepcomet.com/precos' },
-            { label: 'Roadmap', href: 'https://sleepcomet.com/roadmap' },
+            {label: 'Aplicativo', href: 'https://app.sleepcomet.com'},
+            {label: 'Planos e preços', href: 'https://sleepcomet.com/precos'},
+            {label: 'Roadmap', href: 'https://sleepcomet.com/roadmap'},
           ],
         },
         {
           title: 'Documentação',
           items: [
-            { label: 'Início Rápido', to: '/quickstart' },
-            { label: 'API Reference', to: '/api/' },
-            { label: 'Guia de Templates', to: '/features/caption-templates' },
+            {label: 'Início rápido', to: '/quickstart'},
+            {label: 'Funcionalidades', to: '/features/url-processing'},
+            {label: 'Referência da API', to: '/api/'},
+          ],
+        },
+        {
+          title: 'Suporte',
+          items: [
+            {label: 'Perguntas frequentes', to: '/faq'},
+            {label: 'Solução de problemas', to: '/troubleshooting'},
+            {label: 'Limites e cotas', to: '/limits'},
           ],
         },
         {
           title: 'Legal',
           items: [
-            { label: 'Privacidade', href: 'https://sleepcomet.com/privacidade' },
-            { label: 'Termos', href: 'https://sleepcomet.com/termos' },
-            { label: 'Cookies', href: 'https://sleepcomet.com/cookies' },
+            {label: 'Privacidade', href: 'https://sleepcomet.com/privacidade'},
+            {label: 'Termos de uso', href: 'https://sleepcomet.com/termos'},
+            {label: 'Cookies', href: 'https://sleepcomet.com/cookies'},
           ],
         },
       ],
-      copyright: `Copyright \u00A9 ${new Date().getFullYear()} Sleepcomet. Todos os direitos reservados.`,
+      copyright: `Copyright © ${new Date().getFullYear()} SleepComet. Todos os direitos reservados.`,
     },
     prism: {
       theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      darkTheme: prismThemes.nightOwl,
       additionalLanguages: ['bash', 'json', 'python', 'go'],
     },
   } satisfies Preset.ThemeConfig,
