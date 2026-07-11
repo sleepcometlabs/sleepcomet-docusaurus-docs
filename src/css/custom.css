@@ -3,8 +3,8 @@
  *
  * Base: Infima (Docusaurus) + Tailwind v4 (somente theme/utilities, sem
  * preflight para não conflitar com o Infima) + tokens do Coss UI.
- * Direção: noturno, monocromático, um único acento "cometa" (azul-gelo).
- * Sem gradientes.
+ * Direção: paleta espelhada do admin (admin/src/index.css) — zinc neutro,
+ * primary navy no claro e acento roxo-azulado no escuro. Sem gradientes.
  */
 
 @import "tailwindcss/theme.css" layer(theme);
@@ -15,6 +15,18 @@
 @source "../theme";
 
 @custom-variant dark (&:is([data-theme="dark"] *));
+
+/* Tailwind v4 sem preflight: restaura o default de border-color que o
+   preflight aplicaria. Sem isso, a classe `border` cai em currentColor e as
+   bordas ficam brancas (cor do texto) no modo escuro. Fica na layer theme
+   (a mais baixa) para utilities como border-ring continuarem vencendo. */
+@layer theme {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+}
 
 /* ---------------------------------------------------------------------------
  * Tokens Coss UI (consumidos pelos componentes em src/components/cui)
@@ -58,26 +70,27 @@
  * ------------------------------------------------------------------------- */
 
 :root {
-  --background: oklch(0.99 0.002 260);
-  --foreground: oklch(0.17 0.012 260);
-  --card: oklch(0.975 0.003 260);
-  --card-foreground: oklch(0.17 0.012 260);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.17 0.012 260);
-  --primary: oklch(0.21 0.014 260);
-  --primary-foreground: oklch(0.985 0.002 260);
-  --secondary: oklch(0.955 0.004 260);
-  --secondary-foreground: oklch(0.21 0.014 260);
-  --muted: oklch(0.955 0.004 260);
-  --muted-foreground: oklch(0.51 0.014 260);
-  --accent: oklch(0.945 0.005 260);
-  --accent-foreground: oklch(0.21 0.014 260);
-  --destructive: oklch(0.577 0.245 27.3);
-  --destructive-foreground: oklch(0.577 0.245 27.3);
-  --border: oklch(0.915 0.006 260);
-  --input: oklch(0.915 0.006 260);
-  --ring: oklch(0.70 0.01 260);
-  --comet: oklch(0.52 0.145 252);
+  --popover-foreground: oklch(0.145 0 0);
+  /* Roxo da logo (#501AFB); tons médios/claros: #7568FE e #A39AFC */
+  --primary: oklch(0.49 0.286 278.4);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.965 0.001 286.375);
+  --secondary-foreground: oklch(0.205 0.042 265.755);
+  --muted: oklch(0.965 0.001 286.375);
+  --muted-foreground: oklch(0.556 0.011 286.375);
+  --accent: oklch(0.965 0.001 286.375);
+  --accent-foreground: oklch(0.205 0.042 265.755);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0.004 286.375);
+  --input: oklch(0.922 0.004 286.375);
+  --ring: oklch(0.734 0.14 286.6);
+  --comet: oklch(0.49 0.286 278.4);
   --radius: 0.625rem;
 
   /* Infima */
@@ -85,95 +98,102 @@
   --ifm-font-family-monospace: "JetBrains Mono", ui-monospace, monospace;
   --ifm-heading-font-family: "Space Grotesk", var(--ifm-font-family-base);
   --ifm-heading-font-weight: 600;
-  --ifm-background-color: oklch(0.99 0.002 260);
-  --ifm-color-content: oklch(0.24 0.012 260);
-  --ifm-color-content-secondary: oklch(0.51 0.014 260);
+  --ifm-background-color: oklch(1 0 0);
+  --ifm-color-content: oklch(0.145 0 0);
+  --ifm-color-content-secondary: oklch(0.556 0.011 286.375);
 
-  --ifm-color-primary: oklch(0.50 0.145 252);
-  --ifm-color-primary-dark: oklch(0.46 0.145 252);
-  --ifm-color-primary-darker: oklch(0.43 0.14 252);
-  --ifm-color-primary-darkest: oklch(0.38 0.13 252);
-  --ifm-color-primary-light: oklch(0.55 0.145 252);
-  --ifm-color-primary-lighter: oklch(0.58 0.14 252);
-  --ifm-color-primary-lightest: oklch(0.64 0.13 252);
+  /* escala construída sobre o roxo da logo: #501AFB */
+  --ifm-color-primary: oklch(0.49 0.286 278.4);
+  --ifm-color-primary-dark: oklch(0.45 0.27 278.4);
+  --ifm-color-primary-darker: oklch(0.42 0.25 278.4);
+  --ifm-color-primary-darkest: oklch(0.37 0.23 278.4);
+  --ifm-color-primary-light: oklch(0.55 0.24 280);
+  --ifm-color-primary-lighter: oklch(0.611 0.215 281.9);
+  --ifm-color-primary-lightest: oklch(0.734 0.14 286.6);
 
   --ifm-code-font-size: 87.5%;
   --ifm-code-border-radius: 6px;
   --ifm-global-radius: 10px;
-  --docusaurus-highlighted-code-line-bg: oklch(0.9 0.01 252 / 40%);
+  --docusaurus-highlighted-code-line-bg: oklch(0.922 0.004 286.375 / 40%);
 
-  --ifm-navbar-background-color: oklch(0.99 0.002 260 / 82%);
+  --ifm-navbar-background-color: oklch(1 0 0 / 82%);
   --ifm-navbar-shadow: none;
   --ifm-toc-border-color: var(--border);
   --ifm-table-border-color: var(--border);
   --ifm-hr-background-color: var(--border);
 
-  --ifm-footer-background-color: oklch(0.975 0.003 260);
-  --ifm-footer-color: oklch(0.45 0.012 260);
-  --ifm-footer-link-color: oklch(0.35 0.012 260);
-  --ifm-footer-link-hover-color: oklch(0.17 0.012 260);
-  --ifm-footer-title-color: oklch(0.17 0.012 260);
+  /* Footer no roxo escuro da logo (#501AFB), igual nos dois modos */
+  --ifm-footer-background-color: oklch(0.49 0.286 278.4);
+  --ifm-footer-color: oklch(0.88 0.06 286.6);
+  --ifm-footer-link-color: oklch(0.93 0.04 286.6);
+  --ifm-footer-link-hover-color: oklch(1 0 0);
+  --ifm-footer-title-color: oklch(0.985 0 0);
 
-  --ifm-menu-color: oklch(0.38 0.012 260);
-  --ifm-menu-color-background-active: oklch(0.945 0.005 260);
-  --ifm-menu-color-background-hover: oklch(0.955 0.004 260);
-  --ifm-breadcrumb-item-background-active: oklch(0.945 0.005 260);
+  --ifm-menu-color: oklch(0.38 0.011 286.375);
+  --ifm-menu-color-background-active: oklch(0.945 0.001 286.375);
+  --ifm-menu-color-background-hover: oklch(0.965 0.001 286.375);
+  --ifm-breadcrumb-item-background-active: oklch(0.945 0.001 286.375);
 }
 
 /* ---------------------------------------------------------------------------
- * Paleta — modo escuro (padrão): céu noturno com leve tinta azul
+ * Paleta — modo escuro (padrão): zinc neutro do admin
  * ------------------------------------------------------------------------- */
 
 [data-theme="dark"] {
-  --background: oklch(0.155 0.014 262);
-  --foreground: oklch(0.955 0.004 260);
-  --card: oklch(0.195 0.016 262);
-  --card-foreground: oklch(0.955 0.004 260);
-  --popover: oklch(0.205 0.016 262);
-  --popover-foreground: oklch(0.955 0.004 260);
-  --primary: oklch(0.93 0.005 260);
-  --primary-foreground: oklch(0.185 0.014 262);
-  --secondary: oklch(0.26 0.016 262);
-  --secondary-foreground: oklch(0.955 0.004 260);
-  --muted: oklch(0.26 0.016 262);
-  --muted-foreground: oklch(0.72 0.012 260);
-  --accent: oklch(0.26 0.016 262);
-  --accent-foreground: oklch(0.955 0.004 260);
-  --destructive: oklch(0.704 0.191 22.2);
-  --destructive-foreground: oklch(0.704 0.191 22.2);
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.185 0.004 286.375);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.185 0.004 286.375);
+  --popover-foreground: oklch(0.985 0 0);
+  /* Roxo médio da logo (#7568FE): mais legível que o base sobre fundo escuro */
+  --primary: oklch(0.611 0.215 281.9);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.269 0.008 286.375);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0.008 286.375);
+  --muted-foreground: oklch(0.708 0.008 286.375);
+  --accent: oklch(0.269 0.008 286.375);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  /* bordas translúcidas: sólidas clareiam demais os cards sobre o fundo escuro */
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.56 0.01 260);
-  --comet: oklch(0.78 0.105 248);
+  --ring: oklch(0.611 0.215 281.9);
+  --comet: oklch(0.611 0.215 281.9);
 
   /* Infima */
-  --ifm-background-color: oklch(0.155 0.014 262);
-  --ifm-background-surface-color: oklch(0.185 0.015 262);
-  --ifm-color-content: oklch(0.90 0.005 260);
-  --ifm-color-content-secondary: oklch(0.72 0.012 260);
+  --ifm-background-color: oklch(0.145 0 0);
+  --ifm-background-surface-color: oklch(0.185 0.004 286.375);
+  --ifm-color-content: oklch(0.90 0.004 286.375);
+  --ifm-color-content-secondary: oklch(0.708 0.008 286.375);
 
-  --ifm-color-primary: oklch(0.78 0.105 248);
-  --ifm-color-primary-dark: oklch(0.73 0.11 248);
-  --ifm-color-primary-darker: oklch(0.70 0.11 248);
-  --ifm-color-primary-darkest: oklch(0.62 0.115 248);
-  --ifm-color-primary-light: oklch(0.82 0.095 248);
-  --ifm-color-primary-lighter: oklch(0.85 0.085 248);
-  --ifm-color-primary-lightest: oklch(0.89 0.07 248);
+  /* escala construída sobre o roxo médio da logo (#7568FE); o base #501AFB
+     fica como âncora na variante darkest */
+  --ifm-color-primary: oklch(0.611 0.215 281.9);
+  --ifm-color-primary-dark: oklch(0.56 0.24 280);
+  --ifm-color-primary-darker: oklch(0.52 0.26 279);
+  --ifm-color-primary-darkest: oklch(0.49 0.286 278.4);
+  --ifm-color-primary-light: oklch(0.67 0.18 284);
+  --ifm-color-primary-lighter: oklch(0.734 0.14 286.6);
+  --ifm-color-primary-lightest: oklch(0.8 0.1 286.6);
 
-  --docusaurus-highlighted-code-line-bg: oklch(0.3 0.03 252 / 45%);
+  --docusaurus-highlighted-code-line-bg: oklch(0.269 0.008 286.375 / 55%);
 
-  --ifm-navbar-background-color: oklch(0.155 0.014 262 / 78%);
+  --ifm-navbar-background-color: oklch(0.145 0 0 / 78%);
   --ifm-toc-border-color: var(--border);
   --ifm-table-border-color: var(--border);
   --ifm-hr-background-color: var(--border);
 
-  --ifm-footer-background-color: oklch(0.135 0.013 262);
-  --ifm-footer-color: oklch(0.66 0.012 260);
-  --ifm-footer-link-color: oklch(0.78 0.01 260);
-  --ifm-footer-link-hover-color: oklch(0.955 0.004 260);
-  --ifm-footer-title-color: oklch(0.955 0.004 260);
+  /* Footer no roxo escuro da logo (#501AFB), igual nos dois modos */
+  --ifm-footer-background-color: oklch(0.49 0.286 278.4);
+  --ifm-footer-color: oklch(0.88 0.06 286.6);
+  --ifm-footer-link-color: oklch(0.93 0.04 286.6);
+  --ifm-footer-link-hover-color: oklch(1 0 0);
+  --ifm-footer-title-color: oklch(0.985 0 0);
 
-  --ifm-menu-color: oklch(0.78 0.01 260);
+  --ifm-menu-color: oklch(0.78 0.008 286.375);
   --ifm-menu-color-background-active: oklch(1 0 0 / 7%);
   --ifm-menu-color-background-hover: oklch(1 0 0 / 5%);
   --ifm-breadcrumb-item-background-active: oklch(1 0 0 / 7%);
@@ -226,10 +246,6 @@ h1, h2, h3, h4, h5, h6,
   height: 18px;
   width: auto;
   object-fit: contain;
-}
-
-html:not([data-theme="dark"]) .navbar__logo img {
-  filter: invert(1);
 }
 
 .navbar__link {
@@ -289,13 +305,13 @@ div[class*="codeBlockContainer"] {
 
 [data-theme="dark"] pre,
 [data-theme="dark"] div[class*="codeBlockContainer"] {
-  --prism-background-color: oklch(0.13 0.012 262);
-  background-color: oklch(0.13 0.012 262);
+  --prism-background-color: oklch(0.125 0.004 286.375);
+  background-color: oklch(0.125 0.004 286.375);
 }
 
 html:not([data-theme="dark"]) pre,
 html:not([data-theme="dark"]) div[class*="codeBlockContainer"] {
-  background-color: oklch(0.975 0.003 260);
+  background-color: oklch(0.975 0.001 286.375);
 }
 
 code {
@@ -364,6 +380,17 @@ table tr:nth-child(2n) {
 .footer {
   border-top: 1px solid var(--border);
   font-size: 0.875rem;
+}
+
+/* themeConfig.footer usa style:'dark', e o .footer--dark do Infima sobrescreve
+   as vars de footer definidas em :root — reafirma aqui o roxo da logo */
+.footer,
+.footer--dark {
+  --ifm-footer-background-color: oklch(0.49 0.286 278.4);
+  --ifm-footer-color: oklch(0.88 0.06 286.6);
+  --ifm-footer-link-color: oklch(0.93 0.04 286.6);
+  --ifm-footer-link-hover-color: oklch(1 0 0);
+  --ifm-footer-title-color: oklch(0.985 0 0);
 }
 
 .footer__title {

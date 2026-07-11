@@ -83,8 +83,8 @@ const config: Config = {
       title: '',
       logo: {
         alt: 'SleepComet',
-        src: 'img/logo-letter-white.png',
-        srcDark: 'img/logo-letter-white.png',
+        src: 'img/logo-icon.png',
+        srcDark: 'img/logo-icon.png',
       },
       items: [
         {
