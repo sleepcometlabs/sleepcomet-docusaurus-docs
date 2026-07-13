@@ -4,6 +4,10 @@
 # Production
 /build
 
+# Conteúdo dos artigos: gerado pelo scripts/sync-docs.mjs a partir do D1
+# (fonte da verdade, editada no admin) — não é mais mantido manualmente.
+/docs/
+
 # Generated files
 .docusaurus
 .cache-loader
