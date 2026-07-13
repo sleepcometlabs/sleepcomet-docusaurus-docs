@@ -142,8 +142,8 @@ const config: Config = {
         {
           title: 'Legal',
           items: [
-            {label: 'Privacidade', href: 'https://sleepcomet.com/privacidade'},
-            {label: 'Termos de uso', href: 'https://sleepcomet.com/termos'},
+            {label: 'Privacidade', href: 'https://sleepcomet.com/privacy'},
+            {label: 'Termos de uso', href: 'https://sleepcomet.com/terms'},
             {label: 'Cookies', href: 'https://sleepcomet.com/cookies'},
           ],
         },
