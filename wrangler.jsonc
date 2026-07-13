@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sleepcomet-docs",
+  "compatibility_date": "2026-07-13",
+  "pages_build_output_dir": "build",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sleepcomet-banners",
+      "database_id": "b5aee2c1-956e-4afd-881a-0a971050af66"
+    }
+  ]
+}
