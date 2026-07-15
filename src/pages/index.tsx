@@ -105,7 +105,7 @@ function Hero() {
           O corte perfeito acontece enquanto você dorme.
         </h1>
         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-          O SleepComet transforma vídeos longos em cortes verticais com
+          O Sleepcomet transforma vídeos longos em cortes verticais com
           legendas animadas, pontuação de viralidade e publicação agendada.
           Esta documentação cobre a plataforma de ponta a ponta — do primeiro
           projeto à integração com a API.

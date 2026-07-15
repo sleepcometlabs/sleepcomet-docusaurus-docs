@@ -4,9 +4,9 @@ import type * as Preset from '@docusaurus/preset-classic';
 import tailwindPostcss from '@tailwindcss/postcss';
 
 const config: Config = {
-  title: 'SleepComet Docs',
+  title: 'Sleepcomet Docs',
   tagline:
-    'Documentação oficial do SleepComet — a plataforma de IA que transforma vídeos longos em cortes prontos para publicar.',
+    'Documentação oficial do Sleepcomet — a plataforma de IA que transforma vídeos longos em cortes prontos para publicar.',
   favicon: 'img/favicon.svg',
 
   future: {
@@ -82,7 +82,7 @@ const config: Config = {
     navbar: {
       title: '',
       logo: {
-        alt: 'SleepComet',
+        alt: 'Sleepcomet',
         src: 'img/logo-icon.png',
         srcDark: 'img/logo-icon.png',
       },
@@ -148,7 +148,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} SleepComet. Todos os direitos reservados.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Sleepcomet. Todos os direitos reservados.`,
     },
     prism: {
       theme: prismThemes.github,
